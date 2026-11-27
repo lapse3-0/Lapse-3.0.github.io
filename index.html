@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" manifest="Cache.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lapse 3.0 PS4 by MGstore</title>
+<script>
+  (function() {
+    var app = window.applicationCache;
+    if (app && app.status === app.UNCACHED) {
+      window.location.replace("cache.html");
+      return;
+    }
+    if (app) {
+      app.addEventListener("updateready", function() {
+        try { app.swapCache(); } catch (e) {}
+      }, false);
+    }
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body class="quiet">
+
+  <div id="Header">
+    <img src="logo.png" alt="MG Store Logo" class="brand-logo">
+    <div class="badge"><span class="dot"></span> PS4 WebKit Exploit</div>
+    <h1>Lapse 3.0 PS4 by MGstore</h1>
+    <p class="subtitle">Menyiapkan environment &amp; menjalankan payload secara otomatis</p>
+  </div>
+
+  <div id="main-content">
+    <div id="console-view" class="app-view selected">
+      <h1>Lapse 3.0 PS4 by MGstore</h1>
+      <div id="reboot"></div>
+      <div id="verdict"></div>
+      <div id="danger"></div>
+      <div id="stage">Starting WebKit...</div>
+      <div id="vitals"></div>
+      <div id="cfg"></div>
+      <pre id="early"></pre>
+      <div id="nav"></div>
+      <div hidden id="arm"></div>
+      <div id="wrap">
+        <table>
+          <thead><tr><th>#</th><th>test</th><th>st</th><th>result</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div id="tally"></div>
+      <div id="summary"></div>
+    </div>
+
+    <div id="liveLog" role="status" aria-live="polite">Starting WebKit...</div>
+    <div class="ps-symbols">
+      <span>△</span>
+      <span>○</span>
+      <span>✕</span>
+      <span>□</span>
+    </div>
+  </div>
+
+  <footer>
+  <p>  Powered by <span>MGstore</span> </p>
+  </footer>
+
+  <pre id="scr" aria-label="Host log" hidden></pre>
+  <div id="console" hidden></div>
+  <script src="src/main.js" defer></script>
+
+</body>
+</html>

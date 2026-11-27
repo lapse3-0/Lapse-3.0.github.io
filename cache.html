@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" manifest="Cache.manifest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lapse 3.0 PS4 by MGstore</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="cache-page">
+<div id="cache-box">
+    <img src="logo.png" alt="MG Store Logo" class="brand-logo">
+    <div class="badge"><span class="dot"></span> Offline Cache Manager</div>
+    <h1>Lapse 3.0 PS4 by MGstore</h1>
+    <p id="subtitle">Cache</p>
+    <div id="status">Preparing cache...</div>
+    <div id="detail"></div>
+    <div class="bar"><div id="fill"></div></div>
+    <div id="percent">0%</div>
+    <a id="back" href="index.html" target="_self">Back to Menu</a>
+    <div class="ps-symbols">
+      <span>△</span>
+      <span>○</span>
+      <span>✕</span>
+      <span>□</span>
+    </div>
+</div>
+
+<script>
+(function(){
+    var app = window.applicationCache;
+    var fill = document.getElementById("fill");
+    var percent = document.getElementById("percent");
+    var status = document.getElementById("status");
+    var detail = document.getElementById("detail");
+    var backBtn = document.getElementById("back");
+    var finished = false;
+    var redirected = false;
+
+    function goIndexOnly() {
+        if (redirected) return;
+        redirected = true;
+        try {
+            if (window.history && typeof window.history.replaceState === "function") {
+                window.history.replaceState(null, "", "index.html");
+            }
+        } catch (e) {}
+        try {
+            window.location.replace("index.html");
+        } catch (e) {
+            window.location.href = "index.html";
+        }
+    }
+
+    if (backBtn) {
+        backBtn.setAttribute("target", "_self");
+        backBtn.addEventListener("click", function(ev){
+            ev.preventDefault();
+            goIndexOnly();
+        });
+    }
+
+    function setProgress(p, msg, info) {
+        p = Math.max(0, Math.min(100, p));
+        fill.style.width = p + "%";
+        percent.textContent = p + "%";
+        status.textContent = msg;
+        detail.textContent = info || "";
+    }
+
+    function finish(msg, info) {
+        if (finished) return;
+        finished = true;
+        setProgress(100, msg, info || "Opening index.html...");
+        window.setTimeout(goIndexOnly, 150);
+    }
+
+    if (!app) {
+        setProgress(0, "Application Cache unavailable", "This browser does not support the host cache.");
+        return;
+    }
+
+    app.addEventListener("checking", function(){
+        setProgress(0, "Checking Lapse 2.0 PS4 cache...", "Checking the manifest version");
+    }, false);
+
+    app.addEventListener("downloading", function(){
+        setProgress(0, "Caching Lapse 2.0 PS4 files...", "Downloading required host files");
+    }, false);
+
+    app.addEventListener("progress", function(e){
+        var total = e.total || 0;
+        var loaded = e.loaded || 0;
+        var p = total ? Math.floor((loaded / total) * 100) : 0;
+        setProgress(p, "Caching: " + p + "%", loaded + " / " + total + " resources");
+    }, false);
+
+    app.addEventListener("cached", function(){
+        finish("Cache complete — 100%", "All Lapse 2.0 PS4 files are cached");
+    }, false);
+
+    app.addEventListener("updateready", function(){
+        try { app.swapCache(); } catch (e) {}
+        finish("Cache update complete — 100%", "The new host version is ready");
+    }, false);
+
+    app.addEventListener("noupdate", function(){
+        finish("Lapse 2.0 PS4 cache is up to date — 100%", "No new version is available");
+    }, false);
+
+    app.addEventListener("error", function(){
+        if (app.status !== app.UNCACHED) {
+            finish("Using existing Lapse 2.0 PS4 cache", "Update unavailable; continuing with the saved version");
+        } else {
+            setProgress(0, "Cache download failed", "Check the host connection and reload this page");
+        }
+    }, false);
+
+    app.addEventListener("obsolete", function(){
+        setProgress(0, "Cache is obsolete", "Reload the host to create a fresh cache");
+    }, false);
+
+    if (window.location.search.indexOf("update=1") !== -1) {
+        setProgress(0, "Updating Lapse 2.0 PS4 cache...", "Checking for updated files");
+        window.setTimeout(function(){
+            try { app.update(); }
+            catch (e) { setProgress(0, "Cache update failed", String(e)); }
+        }, 250);
+    } else if (app.status === app.IDLE) {
+        finish("Lapse 2.0 PS4 cache is ready — 100%", "Using the saved host files");
+    } else if (app.status === app.UPDATEREADY) {
+        try { app.swapCache(); } catch (e) {}
+        finish("Cache update complete — 100%", "The new host version is ready");
+    }
+})();
+</script>
+</body>
+</html>
