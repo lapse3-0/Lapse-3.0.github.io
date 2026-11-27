@@ -1,1 +1,2 @@
-# Lapse-3.0.github.io
+# LAPSE V 3.0 EX MGSTORE96
+# WORK only 12.02 / 12.00
